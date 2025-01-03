@@ -4,20 +4,25 @@ use strict;
 
 sub new {
     my $class = shift;
-    my $opts  = shift;
+    my %opts  = @_;
     my $self = {
-        verbose => $opts->{verbose} || 0,
+        verbose => $opts{verbose} || 0,
     };
 
     bless $self, $class;
     return $self;
 }
 
+sub verbose($) {
+    my $self = shift;
+    return $self->{verbose};
+}
+
 sub print($$) {
     my $self = shift;
     my $text = shift;
 
-    print "$text\n" if $self->{verbose};
+    print "$text\n" if $self->verbose;
 }
 
 sub run($) {
@@ -41,7 +46,7 @@ sub main {
     unless ($opts{test}) {
         validate_opts();
 
-        my $challenge = new Challenge(\%opts);
+        my $challenge = new Challenge(%opts);
         $challenge->run();
     } else {
         test();
@@ -56,7 +61,7 @@ sub validate_opts {
 sub test() {
     require Test::More; import Test::More 'no_plan';
 
-    my $c = new Challenge({verbose => 1});
+    my $c = new Challenge(verbose => 1);
     ok($c->run(), "dummy test");
 }
 
