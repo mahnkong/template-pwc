@@ -1,68 +1,23 @@
 package Challenge;
 
 use strict;
+use experimental 'signatures';
 
-sub new {
-    my $class = shift;
-    my %opts  = @_;
-    my $self = {
-        verbose => $opts{verbose} || 0,
-    };
+our $verbose = 0;
 
-    bless $self, $class;
-    return $self;
+sub print($text) {
+    print "$text\n" if $verbose;
 }
 
-sub verbose($) {
-    my $self = shift;
-    return $self->{verbose};
-}
-
-sub print($$) {
-    my $self = shift;
-    my $text = shift;
-
-    print "$text\n" if $self->verbose;
-}
-
-sub run($) {
-    my $self = shift;
-    $self->print("Implement me");
+sub run() {
+    Challenge::print("Implement me");
+    return 1
 }
 
 package main;
 use strict;
-use Getopt::Long;
+use Test::More 'no_plan';
 
-my %opts = (test => 0, verbose => 0);
-main();
-
-sub main {
-    GetOptions (
-        "test" => \$opts{test},
-        "verbose" => \$opts{verbose}
-    ) or die("Usage: $0 [ --verbose --test ]");
-
-    unless ($opts{test}) {
-        validate_opts();
-
-        my $challenge = new Challenge(%opts);
-        $challenge->run();
-    } else {
-        test();
-    }
-}
-
-sub validate_opts {
-    delete $opts{test};
-    # validate opts if required
-}
-
-sub test() {
-    require Test::More; import Test::More 'no_plan';
-
-    my $c = new Challenge(verbose => 1);
-    ok($c->run(), "dummy test");
-}
+ok(Challenge::run(), "dummy test");
 
 1;
