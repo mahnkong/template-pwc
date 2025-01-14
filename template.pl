@@ -1,23 +1,11 @@
-package Challenge;
-
 use strict;
-use experimental 'signatures';
-
-our $verbose = 0;
-
-sub print($text) {
-    print "$text\n" if $verbose;
-}
+use warnings;
+use feature 'signatures';
+use Test::More 'no_plan';
 
 sub run() {
-    Challenge::print("Implement me");
+    print "implement me!\n";
     return 1
 }
 
-package main;
-use strict;
-use Test::More 'no_plan';
-
-ok(Challenge::run(), "dummy test");
-
-1;
+ok(run(), "dummy test");
